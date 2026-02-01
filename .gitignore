@@ -37,3 +37,6 @@ out/
 
 ### tmp 폴더 ###
 tmp/
+
+application-local.properties
+application-local.yml

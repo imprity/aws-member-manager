@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: aws-member-manager
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+  info:
+    env:
+      enabled: true
+    build:
+      enabled : true
+
+info:
+  status:
+    UP
+
