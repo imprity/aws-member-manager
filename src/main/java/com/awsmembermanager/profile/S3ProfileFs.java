@@ -2,9 +2,11 @@ package com.awsmembermanager.profile;
 
 import com.awsmembermanager.CustomExceptions.ProfileDownloadUrlException;
 import com.awsmembermanager.CustomExceptions.ProfileUploadException;
+import com.awsmembermanager.Dto;
 import io.awspring.cloud.s3.S3Template;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,11 +37,15 @@ public class S3ProfileFs implements ProfileFs {
     }
 
     @Override
-    public String getDownloadUrl(String key) throws ProfileDownloadUrlException {
+    public Dto.GetMemberProfile getDownloadUrl(String key) throws ProfileDownloadUrlException {
         try {
-            return s3Template
+            String url = s3Template
                     .createSignedGetURL(bucket, key, PRESIGNED_URL_EXPIRATION)
                     .toString();
+
+            LocalDateTime expireDate = LocalDateTime.now().plus(PRESIGNED_URL_EXPIRATION);
+
+            return new Dto.GetMemberProfile(url, expireDate);
 
             // 명시 되지는 않았지만 저의 느낌상 RuntimeException을 던질 거 같습니다.
         } catch (Exception e) {

@@ -1,11 +1,13 @@
 package com.awsmembermanager.profile;
 
 import com.awsmembermanager.CustomExceptions.ProfileUploadException;
+import com.awsmembermanager.Dto;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -44,7 +46,7 @@ public class LocalProfileFs implements ProfileFs {
     }
 
     @Override
-    public String getDownloadUrl(String key) {
-        return key;
+    public Dto.GetMemberProfile getDownloadUrl(String key) {
+        return new Dto.GetMemberProfile(key, LocalDateTime.MAX);
     }
 }

@@ -52,8 +52,6 @@ public class MemberService {
             throw new MemberHasNoProfileException(memberId);
         }
 
-        String url = profileFs.getDownloadUrl(key);
-
-        return new Dto.GetMemberProfile(url);
+        return profileFs.getDownloadUrl(key);
     }
 }
