@@ -1,5 +1,7 @@
 package com.awsmembermanager.profile;
 
+import com.awsmembermanager.CustomExceptions.ProfileDownloadUrlException;
+import com.awsmembermanager.CustomExceptions.ProfileUploadException;
 import io.awspring.cloud.s3.S3Template;
 import java.io.IOException;
 import java.time.Duration;
@@ -22,20 +24,26 @@ public class S3ProfileFs implements ProfileFs {
     private String bucket;
 
     @Override
-    public String upload(MultipartFile file) throws RuntimeException {
+    public String upload(MultipartFile file) throws ProfileUploadException {
         try {
             String key = "profiles/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
             s3Template.upload(bucket, key, file.getInputStream());
             return key;
         } catch (IOException e) {
-            throw new RuntimeException("파일 업로드 실패", e);
+            throw new ProfileUploadException(e);
         }
     }
 
     @Override
-    public String getDownloadUrl(String key) {
-        return s3Template
-                .createSignedGetURL(bucket, key, PRESIGNED_URL_EXPIRATION)
-                .toString();
+    public String getDownloadUrl(String key) throws ProfileDownloadUrlException {
+        try {
+            return s3Template
+                    .createSignedGetURL(bucket, key, PRESIGNED_URL_EXPIRATION)
+                    .toString();
+
+            // 명시 되지는 않았지만 저의 느낌상 RuntimeException을 던질 거 같습니다.
+        } catch (Exception e) {
+            throw new ProfileDownloadUrlException(e);
+        }
     }
 }

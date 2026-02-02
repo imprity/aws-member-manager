@@ -2,6 +2,8 @@ package com.awsmembermanager;
 
 import com.awsmembermanager.CustomExceptions.MemberHasNoProfileException;
 import com.awsmembermanager.CustomExceptions.MemberNotFoundException;
+import com.awsmembermanager.CustomExceptions.ProfileDownloadUrlException;
+import com.awsmembermanager.CustomExceptions.ProfileUploadException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -26,10 +28,20 @@ public class ExceptionHandleController {
         return getResponseForError(e, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ProfileUploadException.class)
+    public ResponseEntity<ProblemDetail> handleProfileUploadException(ProfileUploadException e) {
+        return getResponseForError(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ProfileDownloadUrlException.class)
+    public ResponseEntity<ProblemDetail> handleProfileDownloadUrlException(ProfileDownloadUrlException e) {
+        return getResponseForError(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private ResponseEntity<ProblemDetail> getResponseForError(Exception e, HttpStatus status) {
-        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        ProblemDetail detail = ProblemDetail.forStatus(status);
         detail.setProperty("message", e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(detail);
+        return ResponseEntity.status(status).body(detail);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

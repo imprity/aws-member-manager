@@ -1,5 +1,6 @@
 package com.awsmembermanager.profile;
 
+import com.awsmembermanager.CustomExceptions.ProfileUploadException;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,7 +31,7 @@ public class LocalProfileFs implements ProfileFs {
     }
 
     @Override
-    public String upload(MultipartFile file) throws RuntimeException {
+    public String upload(MultipartFile file) throws ProfileUploadException {
         try {
             Path filePath = Path.of(UUID.randomUUID() + "_" + file.getOriginalFilename());
             Path profileUri = Paths.get(profileDir.toString(), filePath.toString());
@@ -38,7 +39,7 @@ public class LocalProfileFs implements ProfileFs {
 
             return profileUri.toUri().toString();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ProfileUploadException(e);
         }
     }
 
