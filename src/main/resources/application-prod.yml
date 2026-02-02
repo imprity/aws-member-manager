@@ -1,12 +1,21 @@
 spring:
+  config:
+    import: aws-parameterstore:/param/aws-member-manager/prod/
+
   # AWS 관련
   cloud:
     aws:
+      s3:
+        enabled: true
+        bucket : ${S3_BUCKET_NAME}
+      region:
+        static: ap-northeast-2
       parameterstore:
         enabled: true
 
-  config:
-    import: aws-parameterstore:/param/aws-member-manager/prod/
+  servlet:
+    multipart:
+      max-file-size: 10MB
 
   # DB 관련
   datasource:
@@ -41,4 +50,6 @@ logging:
 
 info:
   team-name : ${TEAM_NAME}
+
+use-s3-for-profile: true
 
