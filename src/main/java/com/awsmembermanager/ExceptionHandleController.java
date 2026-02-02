@@ -1,5 +1,6 @@
 package com.awsmembermanager;
 
+import com.awsmembermanager.CustomExceptions.MemberHasNoProfileException;
 import com.awsmembermanager.CustomExceptions.MemberNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,16 @@ public class ExceptionHandleController {
 
     @ExceptionHandler(MemberNotFoundException.class)
     public ResponseEntity<ProblemDetail> handleMemberNotFoundException(MemberNotFoundException e) {
-        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        return getResponseForError(e, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MemberHasNoProfileException.class)
+    public ResponseEntity<ProblemDetail> handleMemberNotFoundException(MemberHasNoProfileException e) {
+        return getResponseForError(e, HttpStatus.NOT_FOUND);
+    }
+
+    private ResponseEntity<ProblemDetail> getResponseForError(Exception e, HttpStatus status) {
+        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         detail.setProperty("message", e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(detail);
     }

@@ -36,9 +36,16 @@ public class Member {
     @Column(nullable = false)
     private Mbti mbti;
 
+    @Column(nullable = true)
+    private String profileKey;
+
     public Member(String name, Integer age, Mbti mbti) {
         this.name = name;
         this.age = age;
         this.mbti = mbti;
+    }
+
+    public void setProfileKey(String key) {
+        profileKey = key;
     }
 }

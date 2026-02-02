@@ -38,5 +38,7 @@ out/
 ### tmp 폴더 ###
 tmp/
 
+profiles/
+
 application-local.properties
 application-local.yml

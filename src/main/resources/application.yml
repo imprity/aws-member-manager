@@ -6,6 +6,8 @@ spring:
     aws:
       parameterstore:
         enabled: false
+      s3:
+        enabled: false
 
 management:
   endpoints:

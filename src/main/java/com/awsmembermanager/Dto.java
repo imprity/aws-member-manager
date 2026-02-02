@@ -12,9 +12,12 @@ public class Dto {
             @Min(value = 0, message = "나이는 0 이상이어야 합니다") @NotNull(message = "나이는 비어있으면 안됩니다") Integer age,
             @NotNull(message = "MBTI는 비어있으면 안됩니다") Mbti mbti) {}
 
-    public record GetMember(Long id, String name, Integer age, Mbti mbti) {
+    public record GetMember(Long id, String name, Integer age, Mbti mbti, String profile) {
         public static GetMember of(Member member) {
-            return new GetMember(member.getMemberId(), member.getName(), member.getAge(), member.getMbti());
+            return new GetMember(
+                    member.getMemberId(), member.getName(), member.getAge(), member.getMbti(), member.getProfileKey());
         }
     }
+
+    public record GetMemberProfile(String profileUrl) {}
 }
