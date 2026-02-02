@@ -1,0 +1,44 @@
+spring:
+  # AWS 관련
+  cloud:
+    aws:
+      parameterstore:
+        enabled: true
+
+  config:
+    import: aws-parameterstore:/param/aws-member-manager/prod/
+
+  # DB 관련
+  datasource:
+    url: jdbc:mysql://${DB_URL}/${DB_TABLE_NAME}
+    username: ${DB_USER_NAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+    show-sql: false
+
+
+# actuator 관련
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+
+  endpoint:
+    health:
+      show-details: never
+
+logging:
+  level:
+    root: info
+
+info:
+  team-name : ${TEAM_NAME}
+

@@ -2,6 +2,11 @@ spring:
   application:
     name: aws-member-manager
 
+  cloud:
+    aws:
+      parameterstore:
+        enabled: false
+
 management:
   endpoints:
     web:
@@ -16,6 +21,5 @@ management:
       enabled : true
 
 info:
-  status:
-    UP
+  profiles: ${spring.profiles.active}
 
