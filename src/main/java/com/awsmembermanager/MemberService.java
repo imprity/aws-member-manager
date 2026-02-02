@@ -1,5 +1,6 @@
 package com.awsmembermanager;
 
+import com.awsmembermanager.CustomExceptions.MemberNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public Dto.GetMember getMember(Long memberId) {
-        Member member = memberRepo
-                .findById(memberId)
-                .orElseThrow(() -> new RuntimeException(String.format("%s id의 Member를 찾지 못했습니다", memberId)));
+        Member member = memberRepo.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
 
         return Dto.GetMember.of(member);
     }

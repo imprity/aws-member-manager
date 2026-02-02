@@ -1,5 +1,6 @@
 package com.awsmembermanager;
 
+import com.awsmembermanager.CustomExceptions.MemberNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ExceptionHandleController {
+
+    @ExceptionHandler(MemberNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleMemberNotFoundException(MemberNotFoundException e) {
+        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        detail.setProperty("message", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(detail);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ProblemDetail> handleValidationException(MethodArgumentNotValidException e) {
