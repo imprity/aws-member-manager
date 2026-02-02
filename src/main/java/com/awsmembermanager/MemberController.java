@@ -13,7 +13,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/api/members")
-    public ResponseEntity<Dto.GetMember> addMember(@Valid @RequestBody Dto.AddMemeber req) {
+    public ResponseEntity<Dto.GetMember> addMember(@Valid @RequestBody Dto.AddMember req) {
         Dto.GetMember res = memberService.addMember(req);
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }

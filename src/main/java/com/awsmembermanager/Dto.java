@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class Dto {
     private Dto() {}
 
-    public record AddMemeber(
+    public record AddMember(
             @NotBlank(message = "이름은 비어있으면 안됩니다") String name,
             @Min(value = 0, message = "나이는 0 이상이어야 합니다") @NotNull(message = "나이는 비어있으면 안됩니다") Integer age,
             @NotNull(message = "MBTI는 비어있으면 안됩니다") Mbti mbti) {}

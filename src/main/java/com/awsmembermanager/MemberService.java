@@ -16,7 +16,7 @@ public class MemberService {
     private final ProfileFs profileFs;
 
     @Transactional
-    public Dto.GetMember addMember(Dto.AddMemeber req) {
+    public Dto.GetMember addMember(Dto.AddMember req) {
         Member member = new Member(req.name(), req.age(), req.mbti());
 
         memberRepo.save(member);
