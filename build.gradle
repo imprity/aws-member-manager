@@ -58,6 +58,36 @@ spotless {
     }
 }
 
+// mysql-schema.sql 생성
+// https://dev.to/jakub_zalas/how-to-run-spring-boot-with-a-dev-profile-and-gradle-2jm
+tasks.register('generateSchema') {
+    dependsOn 'generateSchemaPrep'
+    group = 'build'
+    description = 'Generate mysql-schema.sql'
+
+    // hibernate가 windows에서는 
+    // \n 대신에 \r\n을 써서 새 줄을 만듭니다...
+    // 뭔가 설정을 더 건드리면 될거 같지만... 이게 더 간편해서요
+    doFirst {
+        def schemaFile = file('mysql-schema.sql')
+        if (schemaFile.exists()) {
+            schemaFile.text = schemaFile.text.replaceAll('\r\n', '\n')
+        }
+    }
+}
+
+tasks.register('generateSchemaPrep') {
+    doFirst {
+        delete file('mysql-schema.sql')
+
+        tasks.bootRun.configure {
+            systemProperty('spring.config.additional-location', 'file:./application-mysql-schema.yml')
+        }
+    }
+
+    finalizedBy('bootRun')
+}
+
 // encoding 설정
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
